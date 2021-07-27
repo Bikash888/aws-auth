@@ -12,21 +12,17 @@ export default function Home() {
   const { control, handleSubmit,formState: { errors } } = useForm<LoginProps>();
   const router = useRouter();
 
-  const handleSignup = async (data) => {
-     console.log(data)
+  const handleLogin = async (data) => {
+    
     try {
-       await Auth.signUp({
-        username: data?.username,
-        password: data?.password,
-        attributes: {
-          email: data?.username,
-        },
+       await Auth.signIn(
+        data?.username,
+        data?.password,
+       
         
-       })
+       )
       router.push({
-        pathname: "/email-verification", query: {
-        email:`${data?.username}`
-      }})
+        pathname: "/dashboard",})
       
     } catch (err) {
       notification.error({
@@ -40,7 +36,7 @@ export default function Home() {
   console.log("error",errors)
   return (
     <>
-      <Form onFinish={handleSubmit(handleSignup)} layout='vertical' style={{maxWidth:'30%',margin:"0 auto",marginTop:"40px"}}>
+      <Form onFinish={handleSubmit(handleLogin)} layout='vertical' style={{maxWidth:'30%',margin:"0 auto",marginTop:"40px"}}>
         <Form.Item label="Email Address">
           <Controller
             name="username"
@@ -72,7 +68,7 @@ export default function Home() {
         </Form.Item>
         <Form.Item>
 
-          <Button htmlType="submit" size="large" type='ghost'>Register</Button>
+          <Button htmlType="submit" size="large" type='ghost'>Login</Button>
         </Form.Item>
        
         

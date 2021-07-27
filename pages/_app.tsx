@@ -1,11 +1,16 @@
 import '../styles/globals.css';
-import Amplify from 'aws-amplify';
+import Amplify,{Auth} from 'aws-amplify';
 import 'antd/dist/antd.css';
 import awsconfig from '../utils/aws-exports';
-Amplify.configure(awsconfig);
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+Amplify.configure(awsconfig);
+import { AuthProvider } from '../utils/authContext';
+
+function MyApp({ Component, pageProps  }) {
+  return (
+    <AuthProvider>
+      <Component {...pageProps} />
+    </AuthProvider>)
 }
 
 export default MyApp

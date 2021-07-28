@@ -1,6 +1,6 @@
-import {Form,Input,Button} from 'antd'
+import {Form,Input,Button,notification} from 'antd'
 import {Auth} from 'aws-amplify';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {useRouter} from 'next/router'
 
@@ -11,12 +11,16 @@ interface ICode{
 const EmailVerification = () => {
   const { control, handleSubmit, formState: { errors } } = useForm<ICode>();
   const router = useRouter();
-  console.log(router.query.email)
+  const [isEmailResent,setIsEmailResent]=useState(false)
   const handleAuthVerificationCode = async (data) => {
     try {
-      await Auth.confirmSignUp(router.query.email.toString(),data.code)
+      await Auth.confirmSignUp(router.query.email.toString(), data.code);
+      router.push('/dashboard')
     } catch (err) {
-      console.log("err->",err)
+      console.log("err->", err);
+      notification.error({
+        message:err?.message || "Something went wrong"
+      })
     }
    
   }
@@ -41,6 +45,19 @@ const EmailVerification = () => {
           <Button type="primary" htmlType="submit">Submit</Button>
         </Form.Item>
       </Form>
+      <Button onClick={async() => {
+        try {
+          await Auth.resendSignUp(router.query.email.toString());
+          setIsEmailResent(true);
+        } catch (error) {
+          
+          console.log("resend error",error)
+        }
+       
+      }} type='dashed'>Resend </Button>
+      {
+        isEmailResent && <p>Mail sent, please check your mail</p>
+      }
     </div>
   )
 }

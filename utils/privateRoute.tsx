@@ -6,19 +6,20 @@ const PrivateRoute = (AuthenticatedComponent) => {
   
   const PrivateRouteComponent = ({ children }) => {
     const { authenticated ,user} = useContext(AuthContext);
-    console.log("is authenticated",authenticated)
+    console.log("is authenticated",authenticated,"-->",user)
     const router = useRouter();
     useEffect(() => {
-      if (user == null) {
-        router.push("/")
-      }
+      if (user) {
+        console.log("user is commming")
+      } 
+     
       if (authenticated && user) {
       router.push("/dashboard")
       } else if( !authenticated && user) {
         router.push("/login")
       }
       
-    }, [authenticated])
+    }, [authenticated,user])
     return(
       <>{ children}</>
     )

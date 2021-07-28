@@ -2,7 +2,8 @@
 import { Auth } from 'aws-amplify';
 import { Button, Form, Input, notification } from 'antd';
 import { SubmitHandler, Controller, useForm } from 'react-hook-form'
-import { useRouter} from 'next/router';
+import { useRouter } from 'next/router';
+import Link from 'next/link'
 interface LoginProps{
   username?: string;
   password?: string;
@@ -71,7 +72,9 @@ export default function Home() {
           <Button htmlType="submit" size="large" type='ghost'>Login</Button>
         </Form.Item>
        
-        
+        {
+          <Link href="/forgot-password"><a>Forgot password?</a></Link>
+        }
 
       </Form>
       
